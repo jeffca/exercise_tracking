@@ -1,0 +1,21 @@
+<% include partials/header %>
+
+<div class="content">
+
+<form action="/addNewRun" method="POST">
+
+	<legend>Add new run</legend>
+
+	<label> Distance:</label> <input type="text" name="run[distance]"></input></label><br />
+
+	<label> Time:</label> <input type="text" name="run[time]"></input></label><br />
+
+	<label> Pace per Mile:<input type="text" name="run[pacepermile]"></input></label><br />
+
+	<button class="btn btn-primary btn-lg">Submit</button>
+
+</form>
+
+</div>
+
+<% include partials/footer %>

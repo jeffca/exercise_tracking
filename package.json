@@ -1,0 +1,19 @@
+{
+  "name": "runtracking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.2.14",
+    "pg-promise": "^8.4.6",
+    "request": "^2.88.0"
+  }
+}

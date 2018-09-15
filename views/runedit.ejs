@@ -1,0 +1,25 @@
+<% include partials/header %>
+
+<div class="content">
+
+<form action="/runs/<%= run.id %>?_method=PUT" method="POST">
+
+	<label> Distance:</label> <input type="text" name="run[distance]" value="<%= run.distance %>"></input><br />
+
+	<label> Time:</label> <input type="text" name="run[time]" value="<%= run.time %>"></input><br />
+
+	<label> Pace per Mile:<input type="text" name="run[pacepermile]" value="<%= run.pacepermile %>"></input><br />
+
+	<button class="btn btn-primary btn-lg">Edit</button>
+
+</form>
+
+<form action="/runs/<%= run.id %>?_method=DELETE" method="POST">
+
+<button class="btn btn-danger btn-lg">Delete</button>
+
+</form>
+
+</div>
+
+<% include partials/footer %>

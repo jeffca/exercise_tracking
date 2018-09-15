@@ -1,0 +1,19 @@
+body {
+	background-image: url("http://lisabaylis.com/wp/wp-content/uploads/2017/07/running.jpg");
+	background-size: cover;
+    color: white;
+}
+
+.content {
+	background-color: #333;
+	border: 3px dashed gray;
+	width: 40%;
+	padding: 1.5em;
+}
+
+#footer {
+  margin-top: 10%;
+  text-align: center;
+  font-family: Helvetica, Arial;
+  font-size: 12pt;   
+}

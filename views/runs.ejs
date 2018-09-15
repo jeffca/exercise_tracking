@@ -1,0 +1,19 @@
+<% include partials/header %>
+
+<div class="content">
+
+<% runs.forEach(function(run) { %>
+
+<h2><%= run.distance %> miles</h2>
+<ul>
+	<li>Time: <%= run.time %></li>
+	<li>Pace: <%= run.pacepermile %> minutes per mile</li>
+</ul>
+<a href="/runs/<%= run.id %>"><button class="btn btn-lg btn-primary">View More Information</button></a>
+
+<a href="/runs/edit/<%= run.id %>"><button class="btn btn-info btn-lg">Edit</button></a>
+<% }); %>
+
+</div>
+
+<% include partials/footer %>
