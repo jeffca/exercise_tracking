@@ -2,16 +2,27 @@
 
 <div class="content">
 
+    <ul class="nav" id="trailnav">
+    	<% trails.forEach(function(trail) { %>
+	    	<li class="nav-item">
+	    		<a class="nav-link" href="/trails/<%= trail.dataValues.id %>"><%= trail.dataValues.title %></a>
+	    	</li>
+    	<% }) %>
+    </ul>
+
 <% runs.forEach(function(run) { %>
 
-<h2><%= run.distance %> miles</h2>
+<h2><%= run.dataValues.rundate %></h2>
 <ul>
-	<li>Time: <%= run.time %></li>
-	<li>Pace: <%= run.pacepermile %> minutes per mile</li>
+	<li>Distance: <%= run.dataValues.distance %> miles</li>
+	<li>Time: <%= run.dataValues.time %> </li>
+	<li>Pace: <%= run.dataValues.pacepermile %> minutes per mile</li>
+	<!-- <li>Elevation Gain: <%= run.dataValues.elevationgain %> feet</li> -->
+	<!-- <li>Type: <%= run.dataValues.runtype %></li> -->
 </ul>
-<a href="/runs/<%= run.id %>"><button class="btn btn-lg btn-primary">View More Information</button></a>
+<a href="/runs/<%= run.dataValues.id %>"><button class="btn btn-lg btn-primary">View More Information</button></a>
 
-<a href="/runs/edit/<%= run.id %>"><button class="btn btn-info btn-lg">Edit</button></a>
+<!-- <a href="/runs/edit/<%= run.dataValues.id %>"><button class="btn btn-info btn-lg">Edit</button></a> -->
 <% }); %>
 
 </div>

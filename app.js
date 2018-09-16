@@ -7,8 +7,63 @@ var request = require("request");
 
 methodOverride = require("method-override");
 
-var mongoose = require("mongoose")
-mongoose.connect("mongodb://localhost/runtracking", {useNewUrlParser: true})
+var mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/runtracking", {useNewUrlParser: true});
+
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize('d44r132kdeefer', 'hvwvyrbinytxga', '80ddf8ed99a35b2e20971aeb0c5b41bd8fe16009b57fe17083569a74b45aad55', {
+	dialect: "postgres",
+	host: "ec2-107-21-126-193.compute-1.amazonaws.com",
+	port: 5432,
+	protocol: null,
+	native: true
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+const Trail = sequelize.define("trail", {
+	title: Sequelize.STRING,
+	description: Sequelize.TEXT,
+	createdAt: {
+		field: "createdat",
+		type: Sequelize.DATE
+	},
+	updatedAt: {
+		field: "updatedat",
+		type: Sequelize.DATE		
+	}
+});
+
+const Run = sequelize.define("run", {
+	distance: Sequelize.FLOAT,
+	time: Sequelize.STRING,
+	pacepermile: Sequelize.STRING,
+	elevationgain: Sequelize.INTEGER,
+	rundate: Sequelize.DATEONLY,
+	notes: Sequelize.TEXT,
+	createdAt: {
+		field: "createdat",
+		type: Sequelize.DATE
+	},
+	updatedAt: {
+		field: "updatedat",
+		type: Sequelize.DATE		
+	},
+	trailId: {
+		field: "trailid",
+		type: Sequelize.INTEGER
+	}
+});
+
+Run.belongsTo(Trail);
+
 
 // var trailSchema = new mongoose.Schema({
 // 	name: String,
@@ -68,19 +123,14 @@ app.set("view engine", "ejs"); //tells the server to use ejs files
 // 	}
 // });
 
-app.get("/", function(req,res) {
-    var values =  [ ]
-    res.render("home");
+app.get("/", function(req, res) {
+	res.render("home");
 });
 
-app.get("/friends", function(req, res) {
-	var friends = ["Jim", "Bob", "Larry"];
-	res.render("friends", {friends:friends})
-});
-
-app.post("/addfriend", function(req, res) {
-	console.log(req.body.newfriend);
-	res.redirect("friends")
+app.get("/addNewRun", function(req,res) {
+    var trails = Trail.findAll({attributes: ['id','title']}).then(function(data) {
+	    res.render("addnewrun", {trails:data});
+    });
 });
 
 app.post("/addNewRun", function(req, res) {
@@ -94,13 +144,31 @@ app.post("/addNewRun", function(req, res) {
 	// 		res.redirect("/runs");
 	// 	}
 	// });
-	db.none('INSERT INTO run (distance, time, pacepermile) VALUES ($1, $2, $3)', [req.body.run.distance,req.body.run.time,req.body.run.pacepermile])
-		.then(data => {
-			console.log("success");
-			res.redirect("/runs");
-		}).catch(error => {
-			alert(error);
-		});	
+
+	// db.none('INSERT INTO runs (distance, time, pacepermile, rundate, elevationgain, notes, trailid) VALUES ($1, $2, $3, $4, $5, $6, $7)', [req.body.run.distance,req.body.run.time,req.body.run.pacepermile, req.body.run.rundate, req.body.run.elevationgain, req.body.run.notes, req.body.run.runtype])
+	// 	.then(data => {
+	// 		console.log("success");
+	// 		res.redirect("/runs");
+	// 	}).catch(error => {
+	// 		console.log(error);
+	// 	});	
+
+	return sequelize.transaction(function (t) {
+	  return Run.create({
+	    distance: req.body.run.distance,
+	    time: req.body.run.time,
+	    pacepermile: req.body.run.pacepermile,
+	    rundate: req.body.run.rundate,
+	    elevationgain: req.body.run.elevationgain,
+	    notes: req.body.run.notes,
+	    trailId: req.body.run.trailid
+	  }, {transaction: t});
+	}).then(function (result) {
+		console.log(result);
+		res.redirect("/runs");
+	}).catch(function (error) {
+		console.log(error);
+	});
 
 });
 
@@ -110,7 +178,7 @@ app.get("/runs/edit/:id", function(req, res) {
 			console.log(data);
 			res.render("runedit", {run:data[0]});
 		}).catch(function(error) {
-			alert(error)
+			console.log(error);
 		});	
 
 	// Run.findById(req.params.id, function(error, run) {
@@ -128,7 +196,7 @@ app.put("/runs/:id", function(req, res) {
 			console.log("success");
 			res.redirect("/runs");
 		}).catch(error => {
-			alert(error);
+			console.log(error);
 		});	
 
 	// Run.findByIdAndUpdate(req.params.id, req.body.run, function(error, updatedRun) {
@@ -146,7 +214,7 @@ app.delete("/runs/:id", function(req, res) {
 			console.log("success");
 			res.redirect("/runs");
 		}).catch(error => {
-			alert(error);
+			console.log(error);
 		});	
 
 	// Run.findByIdAndRemove(req.params.id, function(error) {
@@ -159,13 +227,19 @@ app.delete("/runs/:id", function(req, res) {
 });
 
 app.get("/runs", function(req, res) {
-	db.any("SELECT * FROM run")
-		.then(function(data) {
-			console.log(data);
-			res.render("runs", {runs:data});
-		}).catch(function(error) {
-			alert(error)
-		});	
+    var runs = Run.findAll().then(function(rundata) {
+    	var trails = Trail.findAll().then(function(traildata) {
+		    res.render("runs", {runs:rundata, trails:traildata});
+    	})
+    });	
+
+	// db.any("SELECT * FROM run")
+	// 	.then(function(data) {
+	// 		console.log(data);
+	// 		res.render("runs", {runs:data});
+	// 	}).catch(function(error) {
+	// 		console.log(error)
+	// 	});	
 
 	// Run.find({}, function(error, runs) {
 	// 	if (error) {
@@ -177,13 +251,17 @@ app.get("/runs", function(req, res) {
 });
 
 app.get("/runs/:id", function(req, res) {
-	db.any("SELECT * FROM run WHERE id = $1", req.params.id)
-		.then(function(data) {
-			console.log(data);
-			res.render("rundetail", {run:data[0]});
-		}).catch(function(error) {
-			alert(error)
-		});	
+    var runs = Run.findOne({
+    		where: {
+		    	id: req.params.id
+    		},
+	    	include: [{
+	    		model:Trail
+	    	}],
+    	}).then(function(data) {
+    	console.log(data);
+	    res.render("rundetail", {run:data});
+    });	
 	// Run.findById(req.params.id, function(error, run) {
 	// 	if (error) {
 	// 		console.log(error);
@@ -194,20 +272,16 @@ app.get("/runs/:id", function(req, res) {
 	// });
 });
 
-app.get("/trails", function(req, res) {
-	Trail.findOne({name: "Cross Kirkland Corridor"}, function(error, trail) {
-		if(error) {
-			console.log(error);
-		} else {
-			res.send(trail);
-		}
-	});
+app.get("/trails/:id", function(req, res) {
+    var runs = Run.findAll({
+    	where: {
+    		trailId: req.params.id
+    	}
+    }).then(function(data) {
+	    res.render("trails", {runs:data});
+    });	
 });
 
-app.get("/r/:subreddit", function(req, res) {
-    var subreddit = req.params.subreddit;
-    res.send("welcome to the " + subreddit + " subreddit");
-});
 
 app.get("*", function(req, res) {
    res.send("This shows on all pages except the routes above this one"); 

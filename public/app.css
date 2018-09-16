@@ -1,14 +1,42 @@
 body {
-	background-image: url("http://lisabaylis.com/wp/wp-content/uploads/2017/07/running.jpg");
-	background-size: cover;
-    color: white;
+	/*background-image: url("http://lisabaylis.com/wp/wp-content/uploads/2017/07/running.jpg");*/
+	/*background-size: cover;*/
+    background-color: #ccf2ff;
+    color: #111;
+    font-family: Helvetica;
+}
+
+.nav {
+   width: 100%;
+   display: table;
+   text-align: center;
+}
+
+.nav li {
+	 display: inline-block;
+	 float: none;
+}
+
+.nav li a {
+	color: #3847ed;
+	font-weight: bold;
+}
+
+#trailnav {
+	border: 1px dashed #090f51;
+	background-color: #9e8de0;
 }
 
 .content {
-	background-color: #333;
-	border: 3px dashed gray;
-	width: 40%;
+	margin-left: 2.5em;
+	background-color: lightgray;
+	border: 1.5px dashed gray;
+	width: 93%;
 	padding: 1.5em;
+}
+
+.form-control {
+	width: 50%;
 }
 
 #footer {
@@ -16,4 +44,8 @@ body {
   text-align: center;
   font-family: Helvetica, Arial;
   font-size: 12pt;   
+}
+
+#footercontent {
+	background-color: #999;
 }

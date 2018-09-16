@@ -2,10 +2,14 @@
 
 <div class="content">
 
-<h1><%= run.distance %> miles</h1>
+<h1><%= run.dataValues.rundate %></h1>
+<h2><%= run.dataValues.distance %> miles</h2>
 <ul>
-	<li>Time: <%= run.time %></li>
-	<li>Pace: <%= run.pacepermile %> minutes per mile</li>
+	<li>Time: <%= run.dataValues.time %></li>
+	<li>Pace: <%= run.dataValues.pacepermile %> minutes per mile</li>
+	<li>Elevation gain: <%= run.dataValues.elevationgain %> feet</li>
+	<li>Type: <%= run.dataValues.trail.dataValues.title %></li>
+	<li>Notes <%= run.dataValues.notes %></li>
 </ul>
 
 </div>

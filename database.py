@@ -7,8 +7,14 @@ conn = psycopg2.connect(conn_string)
 
 cursor = conn.cursor()
 
-cursor.execute("DROP TABLE run")
+cursor.execute("DROP TABLE runs")
+cursor.execute("DROP TABLE trails")
 
-cursor.execute("CREATE TABLE run (id SERIAL NOT NULL, distance int, time varchar(255), pacepermile int)")
+cursor.execute("CREATE TABLE runs (id SERIAL NOT NULL, distance decimal, rundate date, time varchar(255), pacepermile varchar(255), elevationgain int, notes varchar(255), createdAt date, updatedAt date, trailId int)")
+
+cursor.execute("CREATE TABLE trails (id SERIAL NOT NULL, title varchar(255), description text, createdAt date, updatedAt date)");
+
+cursor.execute("INSERT INTO trails (title) VALUES ('Treadmill')")
+cursor.execute("INSERT INTO trails (title) VALUES ('Cross Kirkland Corridor')")
 
 conn.commit()
