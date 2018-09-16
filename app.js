@@ -95,8 +95,8 @@ Run.belongsTo(Trail);
 // 	}
 // });
 
-var pgp = require("pg-promise")();
-const db = pgp('postgres://hvwvyrbinytxga:80ddf8ed99a35b2e20971aeb0c5b41bd8fe16009b57fe17083569a74b45aad55@ec2-107-21-126-193.compute-1.amazonaws.com:5432/d44r132kdeefer?ssl=true');
+// var pgp = require("pg-promise")();
+// const db = pgp('postgres://hvwvyrbinytxga:80ddf8ed99a35b2e20971aeb0c5b41bd8fe16009b57fe17083569a74b45aad55@ec2-107-21-126-193.compute-1.amazonaws.com:5432/d44r132kdeefer?ssl=true');
 
 // db.none('INSERT INTO run (distance, time, pacepermile) VALUES ($1, $2, $3)', [1,'432', 59])
 // 	.then(data => {
