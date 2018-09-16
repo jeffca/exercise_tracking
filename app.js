@@ -7,8 +7,8 @@ var request = require("request");
 
 methodOverride = require("method-override");
 
-var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/runtracking", {useNewUrlParser: true});
+// var mongoose = require("mongoose");
+// mongoose.connect("mongodb://localhost/runtracking", {useNewUrlParser: true});
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize('d44r132kdeefer', 'hvwvyrbinytxga', '80ddf8ed99a35b2e20971aeb0c5b41bd8fe16009b57fe17083569a74b45aad55', {
