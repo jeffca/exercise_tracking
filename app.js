@@ -11,9 +11,6 @@ methodOverride = require("method-override");
 // mongoose.connect("mongodb://localhost/runtracking", {useNewUrlParser: true});
 
 const Sequelize = require("sequelize");
-
-console.log(" I AM HERE");
-
 const sequelize = new Sequelize('d44r132kdeefer', 'hvwvyrbinytxga', '80ddf8ed99a35b2e20971aeb0c5b41bd8fe16009b57fe17083569a74b45aad55', {
 	dialect: "postgres",
 	host: "ec2-107-21-126-193.compute-1.amazonaws.com",
@@ -21,8 +18,6 @@ const sequelize = new Sequelize('d44r132kdeefer', 'hvwvyrbinytxga', '80ddf8ed99a
 	protocol: null,
 	native: true
 });
-
-console.log("I GOT HERE TOO");
 
 // sequelize
 //   .authenticate()
